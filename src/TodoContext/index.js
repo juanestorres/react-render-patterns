@@ -12,7 +12,7 @@ function TodoProvider(props) {
 
 
     const [searchValue, setSearchValue] = React.useState('');
-
+    const [openModal, setOpenModal] = React.useState(false);
     const completedTodos = todos.filter(todo => todo.completed).length;
     const totalTodos = todos.length;
 
@@ -30,6 +30,13 @@ function TodoProvider(props) {
         saveTodos(newTodos);
     }
 
+    const addTodo = (text) => {
+        const newTodo = {text:text, completed:false};
+        const newTodos = [...todos];
+        newTodos.push(newTodo);
+        saveTodos(newTodos);
+    }
+
     return (
         <TodoContext.Provider value={{
             error,
@@ -41,6 +48,9 @@ function TodoProvider(props) {
             todosFiltered,
             toggleCompleteTodo,
             deleteTodo,
+            addTodo,
+            openModal,
+            setOpenModal
         }}>
             {props.children}
         </TodoContext.Provider>
