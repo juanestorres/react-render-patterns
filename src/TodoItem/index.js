@@ -1,6 +1,7 @@
 import react from "react";
 import './TodoItem.css';
-
+import {BsCheckLg} from 'react-icons/bs';
+import {AiOutlineDelete} from 'react-icons/ai';
 
 function TodoItem(props) {
   return (
@@ -9,7 +10,7 @@ function TodoItem(props) {
         className={`Icon Icon-check ${props.completed && 'Icon-check--active'}`}
         onClick={props.onComplete}
       >
-        √
+        <BsCheckLg/>
       </span>
       <p className={`TodoItem-p ${props.completed && 'TodoItem-p--complete'}`}>
         {props.text}
@@ -17,7 +18,7 @@ function TodoItem(props) {
       <span
         className="Icon Icon-delete"
         onClick={props.onDelete}>
-        X
+        <AiOutlineDelete/>
       </span>
     </li>
   );

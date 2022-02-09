@@ -7,6 +7,7 @@ import { CreateTodoButton } from '../CreateTodoButton/index.';
 import { TodoContext } from "../TodoContext";
 import { Modal } from "../Modal";
 import { TodoForm } from "../TodoForm";
+import MyLoader from "../MyLoader";
 
 function AppUI() {
     //React hook for using context
@@ -25,7 +26,11 @@ function AppUI() {
             <TodoSearch />
             <TodoList>
                 {error && <p>An error ocurred... Reload the page.</p>}
-                {!error && loading && <p>Loading. Please wait...</p>}
+                {!error && loading &&
+                    <div style={{width:'100%',
+                     height:'100%', display:'flex', justifyItems:'center'}}>
+                 <MyLoader/>
+                 </div>}
                 {(!loading && !todosFiltered.length) && <p>Create your first TODO!</p>}
                 {todosFiltered.map(todo => (
                     <TodoItem
