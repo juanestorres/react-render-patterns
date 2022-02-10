@@ -8,6 +8,7 @@ import { TodoContext } from "../TodoContext";
 import { Modal } from "../Modal";
 import { TodoForm } from "../TodoForm";
 import MyLoader from "../MyLoader";
+import { TodoHeader } from "../TodoHeader";
 
 function AppUI() {
     //React hook for using context
@@ -18,19 +19,32 @@ function AppUI() {
         toggleCompleteTodo,
         deleteTodo,
         openModal,
-        setOpenModal } = React.useContext(TodoContext);
+        setOpenModal,
+        totalTodos,
+        completedTodos,
+        searchValue,
+        setSearchValue } = React.useContext(TodoContext);
 
     return (
         <React.Fragment>
-            <TodoCounter />
-            <TodoSearch />
+            <TodoHeader>
+                <TodoCounter
+                    totalTodos={totalTodos}
+                    completedTodos={completedTodos}
+                />
+                <TodoSearch
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue} />
+            </TodoHeader>
             <TodoList>
                 {error && <p>An error ocurred... Reload the page.</p>}
                 {!error && loading &&
-                    <div style={{width:'100%',
-                     height:'100%', display:'flex', justifyItems:'center'}}>
-                 <MyLoader/>
-                 </div>}
+                    <div style={{
+                        width: '100%',
+                        height: '100%', display: 'flex', justifyItems: 'center'
+                    }}>
+                        <MyLoader />
+                    </div>}
                 {(!loading && !todosFiltered.length) && <p>Create your first TODO!</p>}
                 {todosFiltered.map(todo => (
                     <TodoItem
@@ -45,12 +59,12 @@ function AppUI() {
 
             {openModal && (
                 <Modal>
-                    <TodoForm/>
+                    <TodoForm />
                 </Modal>
             )}
             <CreateTodoButton
-                setOpenModal = {setOpenModal}
-                openModal = {openModal}
+                setOpenModal={setOpenModal}
+                openModal={openModal}
             />
         </React.Fragment>
     );
