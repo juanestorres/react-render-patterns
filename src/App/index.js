@@ -7,9 +7,11 @@ import { TodoList } from '../TodoList';
 import { CreateTodoButton } from '../CreateTodoButton/index.';
 import { Modal } from "../Modal";
 import { TodoForm } from "../TodoForm";
-import MyLoader from "../MyLoader";
+import { TodosLoading } from '../TodosLoading';
 import { TodoHeader } from "../TodoHeader";
 import { useTodos } from './useTodos';
+import { TodosError } from '../TodosError';
+import { EmptyTodos } from '../EmptyTodos';
 // const defaultTodos = [
 //   { text: 'Cortar cebolla', completed: true },
 //   { text: 'Tomar el cursso de intro a React', completed: false },
@@ -37,26 +39,37 @@ function App() {
 
   return (
     <React.Fragment>
-      <TodoHeader>
+      <TodoHeader loading={loading} >
         <TodoCounter
           totalTodos={totalTodos}
           completedTodos={completedTodos}
         />
         <TodoSearch
           searchValue={searchValue}
-          setSearchValue={setSearchValue} />
+          setSearchValue={setSearchValue}
+
+          />
       </TodoHeader>
-      <TodoList>
-        {error && <p>An error ocurred... Reload the page.</p>}
-        {!error && loading &&
-          <div style={{
-            width: '100%',
-            height: '100%', display: 'flex', justifyItems: 'center'
-          }}>
-            <MyLoader />
-          </div>}
-        {(!loading && !todosFiltered.length) && <p>Create your first TODO!</p>}
-        {todosFiltered.map(todo => (
+      <TodoList
+        searchValue={searchValue}
+        error={error}
+        loading={loading}
+        todosFiltered={todosFiltered}
+        onError={() => <TodosError />}
+        onLoading={() => <TodosLoading />}
+        onEmptyTodos={() => <EmptyTodos />}
+        onEmptySearchResults={()=> <p>There are no results for {searchValue}</p>}
+        // render={todo => (
+        //   <TodoItem
+        //     key={todo.text}
+        //     text={todo.text}
+        //     completed={todo.completed}
+        //     onComplete={() => toggleCompleteTodo(todo.text)}
+        //     onDelete={() => deleteTodo(todo.text)}
+        //   />
+        // )}
+      >
+      {todo => (
           <TodoItem
             key={todo.text}
             text={todo.text}
@@ -64,14 +77,13 @@ function App() {
             onComplete={() => toggleCompleteTodo(todo.text)}
             onDelete={() => deleteTodo(todo.text)}
           />
-        ))}
+        )}
       </TodoList>
-
       {openModal && (
-        <Modal
-          addTodo={addTodo}
-          setOpenModal={setOpenModal}>
-          <TodoForm />
+        <Modal>
+          <TodoForm
+            addTodo={addTodo}
+            setOpenModal={setOpenModal} />
         </Modal>
       )}
       <CreateTodoButton
